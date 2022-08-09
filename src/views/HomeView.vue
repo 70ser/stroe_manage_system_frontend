@@ -87,6 +87,8 @@
 
 <script>
 // @ is an alias to /src
+
+import request from "@/utils/request";
 export default {
   name: "HomeView",
   components: {},
@@ -127,7 +129,11 @@ export default {
       this.dialogVisible = true;
       this.form = {};
     },
-    save() {},
+    save() {
+      request.post("/book", this.form).then((res) => {
+        console.log(res);
+      });
+    },
     handleEdit(index, row) {
       console.log(index, row);
     },
