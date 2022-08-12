@@ -30,11 +30,9 @@
         </template> -->
         <template #default="scope">
           <el-button size="medium" @click="handleEdit(scope.row)">编辑</el-button>
-          <el-popconfirm title="确认删除吗?">
+          <el-popconfirm title="确认删除吗?" @confirm="handleDelete(scope.row.id)">
             <template #reference>
-              <el-button type="danger" @click="handleDelete(scope.$index, scope.row)"
-                >删除</el-button
-              >
+              <el-button type="danger">删除</el-button>
             </template>
           </el-popconfirm>
         </template>
@@ -153,8 +151,18 @@ export default {
       this.form = JSON.parse(JSON.stringify(row));
       this.dialogVisible = true;
     },
-    handleDelete(index, row) {
-      this.tableData.splice(index, 1);
+    handleDelete(id) {
+      // this.tableData.splice(index, 1);
+      console.log(id);
+      request.delete("/book/" + id).then((res) => {
+        console.log(res);
+        if (res.code === "0") {
+          this.$message.success("删除成功");
+        } else {
+          this.$message.error(res.msg);
+        }
+      });
+      this.load(); //刷新表格数据
     },
     handleSizeChange(val) {
       this.load();
