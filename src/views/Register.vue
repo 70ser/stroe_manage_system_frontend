@@ -4,14 +4,14 @@
   >
     <div style="width: 400px; margin: 150px auto">
       <div style="color: #cccccc; font-size: 30px; text-align: center; padding: 30px">
-        欢迎登录
+        欢迎注册
       </div>
       <el-form ref="form" :model="form" size="normal" :rules="rules">
         <el-form-item prop="username">
           <el-input v-model="form.username">
             <template #prefix>
-              <el-icon><User /></el-icon>
-            </template>
+              <el-icon><User /></el-icon> </template
+            >+
           </el-input>
         </el-form-item>
         <el-form-item prop="password">
@@ -21,8 +21,17 @@
             </template>
           </el-input>
         </el-form-item>
+        <el-form-item prop="confirm">
+          <el-input v-model="form.confirm" show-password>
+            <template #prefix>
+              <el-icon><Lock /></el-icon>
+            </template>
+          </el-input>
+        </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="login" style="width: 100%">登 录</el-button>
+          <el-button type="primary" @click="register" style="width: 100%"
+            >注 册</el-button
+          >
         </el-form-item>
       </el-form>
     </div>
@@ -31,24 +40,29 @@
 <script>
 import request from "@/utils/request";
 export default {
-  name: "Login",
+  name: "Register",
   data() {
     return {
       form: {},
       rules: {
         username: [{ required: true, message: "请输入用户名", trigger: "blur" }],
         password: [{ required: true, message: "请输入密码", trigger: "blur" }],
+        confirm: [{ required: true, message: "请确认密码", trigger: "blur" }],
       },
     };
   },
   methods: {
-    login() {
+    register() {
       this.$refs["form"].validate((valid) => {
         if (valid) {
-          request.post("/user/login", this.form).then((res) => {
+          if (this.form.password !== this.form.confirm) {
+            this.$message.error("两次密码不一致");
+            return;
+          }
+          request.post("/user/register", this.form).then((res) => {
             if (res.code === "0") {
-              this.$message.success("登录成功");
-              this.$router.push("/");
+              this.$message.success("注册成功");
+              this.$router.push("/login"); //跳转登录界面
             } else {
               this.$message.error(res.msg);
             }
@@ -57,14 +71,6 @@ export default {
           return false;
         }
       });
-      // request.post("/user/login", this.form).then((res) => {
-      //   if (res.code === "0") {
-      //     this.$message.success("登录成功");
-      //     this.$router.push("/"); //跳转主页
-      //   } else {
-      //     this.$message.error(res.msg);
-      //   }
-      // });
     },
   },
 };
