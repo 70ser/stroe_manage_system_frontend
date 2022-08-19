@@ -18,6 +18,17 @@
     </div>
     <el-table :data="tableData" stripe border style="width: 100%">
       <el-table-column prop="id" label="ID" sortable />
+      <el-table-column label="图片">
+        <template #default="scope">
+          <el-image
+            style="width: 100px; height: 100px"
+            :src="scope.row.imageUrl"
+            fit="cover"
+            preview-teleported
+            :preview-src-list="[scope.row.imageUrl]"
+          />
+        </template>
+      </el-table-column>
       <el-table-column prop="isbn" label="ISBN" sortable />
       <el-table-column prop="name" label="书名" />
       <el-table-column prop="author" label="作者" />
@@ -72,6 +83,19 @@
         <el-form-item label="价格">
           <el-input v-model="form.price" style="width: 80%" />
         </el-form-item>
+        <el-form-item>
+          <el-upload
+            ref="upload"
+            action="http://localhost:9090/files/upload"
+            :limit="1"
+            :on-success="fileUploadSuccess"
+          >
+            <el-button type="primary">点击上传图片</el-button>
+            <template #tip>
+              <div class="el-upload__tip">jpg/png files with a size less than 500KB.</div>
+            </template>
+          </el-upload>
+        </el-form-item>
       </el-form>
       <template #footer>
         <span class="dialog-footer">
@@ -105,6 +129,10 @@ export default {
     this.load();
   },
   methods: {
+    fileUploadSuccess(res) {
+      console.log(res);
+      this.form.imageUrl = res.data;
+    },
     load() {
       request
         .get("book", {
@@ -146,6 +174,7 @@ export default {
       }
       this.load(); //刷新表格数据
       this.dialogVisible = false; //关闭弹窗
+      this.$refs.upload.clearFiles(); //清空上传文件
     },
     handleEdit(row) {
       this.form = JSON.parse(JSON.stringify(row));
