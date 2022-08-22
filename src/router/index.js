@@ -3,6 +3,7 @@ import HomeView from '../views/HomeView.vue'
 import Login from '../views/Login.vue'
 import Layout from '../layout/Layout.vue'
 import Register from '../views/Register.vue'
+import Editor from '../views/Editor.vue'
 const routes = [
   {
     path: '/',
@@ -17,8 +18,8 @@ const routes = [
       },
       {
         path: '/registertemp',
-        name: 'RegisterTemp',
-        component: Register
+        name: 'Editoor',
+        component: Editor
       },
     ]
   },
@@ -31,6 +32,11 @@ const routes = [
     path: '/register',
     name: 'Register',
     component: Register
+  },
+  {
+    path: '/editor',
+    name: 'Editor',
+    component: Editor
   },
 ]
 

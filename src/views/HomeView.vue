@@ -40,7 +40,7 @@
           <el-input v-model="search" size="small" placeholder="请输入关键字" />
         </template> -->
         <template #default="scope">
-          <el-button size="medium" @click="handleEdit(scope.row)">编辑</el-button>
+          <el-button @click="handleEdit(scope.row)">编辑</el-button>
           <el-popconfirm title="确认删除吗?" @confirm="handleDelete(scope.row.id)">
             <template #reference>
               <el-button type="danger">删除</el-button>
@@ -63,7 +63,12 @@
         @current-change="handleCurrentChange"
       />
     </div>
-    <el-dialog v-model="dialogVisible" title="Tips" width="30%">
+    <el-dialog
+      v-model="dialogVisible"
+      title="Tips"
+      width="50%"
+      :before-close="handleDialogClose"
+    >
       <el-form :model="form" label-width="120px">
         <el-form-item label="ISBN">
           <el-input v-model="form.isbn" style="width: 80%" />
@@ -96,6 +101,36 @@
             </template>
           </el-upload>
         </el-form-item>
+        <div>
+          <p>下面应该是editor</p>
+          <div>
+            <el-button @click="printEditorHtml">print html</el-button>
+            <el-button @click="getEditorText">print text</el-button>
+          </div>
+          <div style="border: 1px solid #ccc; margin-top: 10px">
+            <!-- 工具栏 -->
+            <Toolbar
+              style="border-bottom: 1px solid #ccc"
+              :editor="editor"
+              :defaultConfig="toolbarConfig"
+            />
+            <!-- 编辑器 -->
+            <Editor
+              style="height: 400px"
+              :defaultConfig="editorConfig"
+              v-model="html"
+              @onChange="onChange"
+              @onCreated="onCreated"
+            />
+          </div>
+          <div style="margin-top: 10px">
+            <textarea
+              v-model="html"
+              readonly
+              style="width: 100%; height: 200px; outline: none"
+            ></textarea>
+          </div>
+        </div>
       </el-form>
       <template #footer>
         <span class="dialog-footer">
@@ -111,11 +146,26 @@
 // @ is an alias to /src
 
 import request from "@/utils/request";
+import "@wangeditor/editor/dist/css/style.css"; // 引入 css
+import { Editor, Toolbar } from "@wangeditor/editor-for-vue";
 export default {
   name: "HomeView",
-  components: {},
+  components: { Editor, Toolbar },
   data() {
     return {
+      editor: null,
+      html: "<p>hello&nbsp;world</p>",
+      toolbarConfig: {
+        // toolbarKeys: [ /* 显示哪些菜单，如何排序、分组 */ ],
+        // excludeKeys: [ /* 隐藏哪些菜单 */ ],
+      },
+      editorConfig: {
+        placeholder: "请输入内容...",
+        // autoFocus: false,
+
+        // 所有的菜单配置，都要在 MENU_CONF 属性下
+        MENU_CONF: {},
+      },
       form: {},
       dialogVisible: false,
       search: "",
@@ -128,7 +178,37 @@ export default {
   created() {
     this.load();
   },
+  mounted() {
+    // 模拟 ajax 请求，异步渲染编辑器
+    setTimeout(() => {
+      this.html = "<p>Ajax 异步设置内容 HTML</p>";
+    }, 1500);
+  },
+  beforeDestroy() {
+    const editor = this.editor;
+    if (editor == null) return;
+    editor.destroy(); // 组件销毁时，及时销毁 editor ，重要！！！
+  },
   methods: {
+    onCreated(editor) {
+      this.editor = Object.seal(editor); // 【注意】一定要用 Object.seal() 否则会报错
+    },
+    getEditorText() {
+      const editor = this.editor;
+      if (editor == null) return;
+
+      console.log(editor.getText()); // 执行 editor API
+    },
+    printEditorHtml() {
+      const editor = this.editor;
+      if (editor == null) return;
+
+      console.log(editor.getHtml()); // 执行 editor API
+    },
+
+    onChange(editor) {
+      console.log("onChange", editor.getHtml()); // onChange 时获取编辑器最新内容
+    },
     fileUploadSuccess(res) {
       console.log(res);
       this.form.imageUrl = res.data;
@@ -198,6 +278,10 @@ export default {
     },
     handleCurrentChange() {
       this.load();
+    },
+    handleDialogClose() {
+      this.$refs.upload.clearFiles(); //清空上传文件
+      this.dialogVisible = false;
     },
   },
 };

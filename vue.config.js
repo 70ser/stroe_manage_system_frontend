@@ -4,6 +4,9 @@ module.exports = defineConfig({
 })
 // 跨域配置
 module.exports = {
+  configureWebpack: {
+    devtool: 'source-map'
+  },
   devServer: {                //记住，别写错了devServer//设置本地默认端口  选填
       port: 9876,
       proxy: {                 //设置代理，必须填
