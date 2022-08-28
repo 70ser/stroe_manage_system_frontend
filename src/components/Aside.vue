@@ -14,6 +14,8 @@
           <span>系统管理</span>
         </template>
         <el-menu-item index="home">书籍管理</el-menu-item>
+        <el-menu-item index="user">用户管理</el-menu-item>
+        <el-menu-item index="order">订单管理</el-menu-item>
       </el-sub-menu>
       <el-menu-item index="registertemp">
         <el-icon><Menu /></el-icon>

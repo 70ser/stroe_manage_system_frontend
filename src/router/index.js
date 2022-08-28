@@ -4,6 +4,8 @@ import Login from '../views/Login.vue'
 import Layout from '../layout/Layout.vue'
 import Register from '../views/Register.vue'
 import Editor from '../views/Editor.vue'
+import User from '../views/User.vue'
+import Order from '../views/Order.vue'
 const routes = [
   {
     path: '/',
@@ -21,6 +23,16 @@ const routes = [
         name: 'Editoor',
         component: Editor
       },
+      {
+        path: '/user',
+        name: 'User',
+        component: User
+      },
+      {
+        path: '/order',
+        name: 'Order',
+        component: Order
+      }
     ]
   },
   {

@@ -17,8 +17,20 @@
       <el-button type="primary" style="margin-left: 5px" @click="load">查询</el-button>
     </div>
     <el-table :data="tableData" stripe border style="width: 100%">
-      <el-table-column prop="id" label="ID" sortable />
-      <el-table-column label="图片">
+      <el-table-column type="expand">
+        <template #default="props">
+          <el-input
+            v-model="props.row.name"
+            style="padding: 10px"
+            readonly
+            :rows="2"
+            type="textarea"
+            placeholder="Please input"
+          />
+        </template>
+      </el-table-column>
+      <el-table-column prop="id" label="ID" sortable width="150px" />
+      <!-- <el-table-column label="图片">
         <template #default="scope">
           <el-image
             style="width: 100px; height: 100px"
@@ -28,18 +40,19 @@
             :preview-src-list="[scope.row.imageUrl]"
           />
         </template>
-      </el-table-column>
-      <el-table-column prop="isbn" label="ISBN" sortable />
-      <el-table-column prop="name" label="书名" />
-      <el-table-column prop="author" label="作者" />
-      <el-table-column prop="press" label="出版社" />
-      <el-table-column prop="stock" label="库存" />
-      <el-table-column prop="price" label="价格" />
-      <el-table-column fixed="right" label="Operations">
+      </el-table-column> -->
+      <el-table-column prop="isbn" label="ISBN" sortable width="150px" />
+      <el-table-column prop="name" label="书名" min-width="50px" />
+      <el-table-column prop="author" label="作者" min-width="50px" />
+      <el-table-column prop="press" label="出版社" min-width="50px" />
+      <el-table-column prop="stock" label="库存" min-width="50px" />
+      <el-table-column prop="price" label="价格" min-width="50px" />
+      <el-table-column fixed="right" label="Operations" min-width="100px">
         <!-- <template #header>
           <el-input v-model="search" size="small" placeholder="请输入关键字" />
         </template> -->
         <template #default="scope">
+          <el-button @click="showDetail(scope.row)">详情</el-button>
           <el-button @click="handleEdit(scope.row)">编辑</el-button>
           <el-popconfirm title="确认删除吗?" @confirm="handleDelete(scope.row.id)">
             <template #reference>
@@ -102,11 +115,6 @@
           </el-upload>
         </el-form-item>
         <div>
-          <p>下面应该是editor</p>
-          <div>
-            <el-button @click="printEditorHtml">print html</el-button>
-            <el-button @click="getEditorText">print text</el-button>
-          </div>
           <div style="border: 1px solid #ccc; margin-top: 10px">
             <!-- 工具栏 -->
             <Toolbar
@@ -118,17 +126,17 @@
             <Editor
               style="height: 400px"
               :defaultConfig="editorConfig"
-              v-model="html"
+              v-model="htmldetail"
               @onChange="onChange"
               @onCreated="onCreated"
             />
           </div>
           <div style="margin-top: 10px">
-            <textarea
-              v-model="html"
-              readonly
-              style="width: 100%; height: 200px; outline: none"
-            ></textarea>
+            <!-- <div
+              id="editor-content-view"
+              class="editor-content-view"
+              style="width: 100%; height: 100px; outline: none"
+            ></div> -->
           </div>
         </div>
       </el-form>
@@ -154,7 +162,7 @@ export default {
   data() {
     return {
       editor: null,
-      html: "<p>hello&nbsp;world</p>",
+      htmldetail: "",
       toolbarConfig: {
         // toolbarKeys: [ /* 显示哪些菜单，如何排序、分组 */ ],
         // excludeKeys: [ /* 隐藏哪些菜单 */ ],
@@ -164,7 +172,16 @@ export default {
         // autoFocus: false,
 
         // 所有的菜单配置，都要在 MENU_CONF 属性下
-        MENU_CONF: {},
+        MENU_CONF: {
+          uploadImage: {
+            server: "http://localhost:9090/files/editor/upload",
+            fieldName: "file",
+          },
+          uploadVideo: {
+            server: "http://localhost:9090/files/editor/upload",
+            fieldName: "file",
+          },
+        },
       },
       form: {},
       dialogVisible: false,
@@ -180,9 +197,9 @@ export default {
   },
   mounted() {
     // 模拟 ajax 请求，异步渲染编辑器
-    setTimeout(() => {
-      this.html = "<p>Ajax 异步设置内容 HTML</p>";
-    }, 1500);
+    // setTimeout(() => {
+    //   this.html = "<p>Ajax 异步设置内容 HTML</p>";
+    // }, 1500);
   },
   beforeDestroy() {
     const editor = this.editor;
@@ -208,6 +225,7 @@ export default {
 
     onChange(editor) {
       console.log("onChange", editor.getHtml()); // onChange 时获取编辑器最新内容
+      // document.getElementById("editor-content-view").innerHTML = this.htmldetail;
     },
     fileUploadSuccess(res) {
       console.log(res);
@@ -230,9 +248,11 @@ export default {
     },
     add() {
       this.dialogVisible = true;
+      this.htmldetail = "";
       this.form = {};
     },
     save() {
+      this.form.description = this.htmldetail;
       if (this.form.id) {
         request.put("book", this.form).then((res) => {
           console.log(res);
@@ -257,6 +277,19 @@ export default {
       this.$refs.upload.clearFiles(); //清空上传文件
     },
     handleEdit(row) {
+      this.form = JSON.parse(JSON.stringify(row));
+      if (this.form.description) {
+        this.htmldetail = this.form.description;
+      } else {
+        this.htmldetail = "";
+      }
+      this.dialogVisible = true;
+    },
+    showDetail(row) {
+      this.form = JSON.parse(JSON.stringify(row));
+      this.dialogVisible = true;
+    },
+    editDetail(row) {
       this.form = JSON.parse(JSON.stringify(row));
       this.dialogVisible = true;
     },
