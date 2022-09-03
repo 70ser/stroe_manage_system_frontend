@@ -1,11 +1,7 @@
 <template>
-  <div
-    style="width: 100%; height: 100vh; background-color: darkslateblue; overflow: hidden"
-  >
+  <div style="width: 100%; height: 100vh; background-color: white; overflow: hidden">
     <div style="width: 400px; margin: 150px auto">
-      <div style="color: #cccccc; font-size: 30px; text-align: center; padding: 30px">
-        欢迎注册
-      </div>
+      <div style="font-size: 30px; text-align: center; padding: 30px">欢迎注册</div>
       <el-form ref="form" :model="form" size="normal" :rules="rules">
         <el-form-item prop="username">
           <el-input v-model="form.username">

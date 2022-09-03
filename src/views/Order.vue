@@ -18,14 +18,18 @@
     </div>
     <el-table :data="tableData" stripe border style="width: 100%">
       <el-table-column prop="id" label="订单ID" sortable width="185px" />
-      <el-table-column prop="userId" label="用户ID" sortable width="150px" />
-      <el-table-column prop="bookId" label="商品ID" min-width="50px" />
-      <el-table-column prop="alipayNo" label="支付宝订单号" min-width="50px" />
+      <el-table-column prop="userId" label="用户ID" sortable min-width="20px" />
+      <el-table-column prop="bookId" label="商品ID" min-width="20px" />
+      <el-table-column prop="alipayNo" label="支付宝订单号" min-width="60px" />
       <el-table-column prop="createTime" label="创建时间" min-width="50px" />
       <el-table-column prop="payTime" label="支付时间" min-width="50px" />
-      <el-table-column prop="total" label="金额" min-width="50px" />
-      <el-table-column prop="state" label="状态" min-width="50px" />
-      <el-table-column fixed="right" label="Operations" min-width="100px">
+      <el-table-column prop="total" label="金额" min-width="25px" />
+      <el-table-column prop="state" label="状态" min-width="25px">
+        <template #default="scope">
+          <span>{{ options[scope.row.state - 1].label }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column fixed="right" label="Operations" min-width="40px">
         <!-- <template #header>
           <el-input v-model="search" size="small" placeholder="请输入关键字" />
         </template> -->
@@ -58,9 +62,10 @@
           <el-input v-model="form.id" disabled style="width: 80%" />
         </el-form-item>
         <el-form-item label="原状态">
-          <el-select v-model="oldstate">
+          <el-select v-model="oldstate" disabled>
             <el-option
               v-for="item in options"
+              disabled
               :key="item.value"
               :label="item.label"
               :value="item.value"
@@ -76,7 +81,6 @@
               :value="item.value"
             />
           </el-select>
-          <el-input v-model="form.state"></el-input>
         </el-form-item>
       </el-form>
       <template #footer>
@@ -124,26 +128,11 @@ export default {
       total: 0,
       tableData: [],
       options: [
-        {
-          value: "1",
-          label: "已确认,未付款",
-        },
-        {
-          value: "2",
-          label: "已付款,未发货",
-        },
-        {
-          value: "3",
-          label: "已发货,未签收",
-        },
-        {
-          value: "4",
-          label: "订单已结束",
-        },
-        {
-          value: "-1",
-          label: "订单已退款",
-        },
+        { value: 1, label: "未支付" },
+        { value: 2, label: "已支付" },
+        { value: 3, label: "已发货" },
+        { value: 4, label: "已完成" },
+        { value: 5, label: "已取消" },
       ],
     };
   },
@@ -177,6 +166,12 @@ export default {
       this.form = {};
     },
     save() {
+      if (this.form.createTime) {
+        delete this.form.createTime;
+      }
+      if (this.form.payTime) {
+        delete this.form.payTime;
+      }
       if (this.form.id) {
         request.put("order", this.form).then((res) => {
           console.log(res);
