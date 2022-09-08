@@ -1,21 +1,24 @@
 <template>
   <div
-    style="width: 100%; height: 100vh; background-color: darkslateblue; overflow: hidden"
+    style="
+      width: 100%;
+      height: 100vh;
+      background-image: linear-gradient(to bottom right, lightblue, #fff);
+      overflow: hidden;
+    "
   >
     <div style="width: 400px; margin: 150px auto">
-      <div style="color: #cccccc; font-size: 30px; text-align: center; padding: 30px">
-        欢迎登录
-      </div>
+      <div style="font-size: 30px; text-align: center; padding: 30px">欢迎登录</div>
       <el-form ref="form" :model="form" size="normal" :rules="rules">
         <el-form-item prop="username">
-          <el-input v-model="form.username">
+          <el-input v-model="form.username" placeholder="用户名">
             <template #prefix>
               <el-icon><User /></el-icon>
             </template>
           </el-input>
         </el-form-item>
         <el-form-item prop="password">
-          <el-input v-model="form.password" show-password>
+          <el-input v-model="form.password" show-password placeholder="密码">
             <template #prefix>
               <el-icon><Lock /></el-icon>
             </template>

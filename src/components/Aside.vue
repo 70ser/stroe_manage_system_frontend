@@ -8,12 +8,16 @@
       @open="handleOpen"
       @close="handleClose"
     >
-      <el-sub-menu index="1">
+      <el-menu-item index="home">
+        <el-icon><House /></el-icon>
+        <span>首页</span>
+      </el-menu-item>
+      <el-sub-menu index="2">
         <template #title>
           <el-icon><location /></el-icon>
           <span>系统管理</span>
         </template>
-        <el-menu-item index="home">书籍管理</el-menu-item>
+        <el-menu-item index="homeView">书籍管理</el-menu-item>
         <el-menu-item index="user">用户管理</el-menu-item>
         <el-menu-item index="order">订单管理</el-menu-item>
       </el-sub-menu>

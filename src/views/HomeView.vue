@@ -3,8 +3,16 @@
     <!-- 功能区域-->
     <div style="margin: 10px 0">
       <el-button type="primary" @click="add">新增</el-button>
-      <el-button type="primary">导入</el-button>
-      <el-button type="primary">导出</el-button>
+      <el-upload
+        :action="'http://' + serverIp + ':9090/book/import'"
+        :show-file-list="false"
+        accept="xlsx"
+        :on-success="handleExcelImportSuccess"
+        style="display: inline-block; margin-left: 10px; margin-right: 10px"
+      >
+        <el-button type="primary">导入</el-button>
+      </el-upload>
+      <el-button type="primary" @click="exp">导出</el-button>
     </div>
     <!-- 搜索区域-->
     <div style="margin: 10px 0">
@@ -52,7 +60,7 @@
           <el-input v-model="search" size="small" placeholder="请输入关键字" />
         </template> -->
         <template #default="scope">
-          <el-button @click="showDetail(scope.row)">详情</el-button>
+          <!-- <el-button @click="showDetail(scope.row)">详情</el-button> -->
           <el-button @click="handleEdit(scope.row)">编辑</el-button>
           <el-popconfirm title="确认删除吗?" @confirm="handleDelete(scope.row.id)">
             <template #reference>
@@ -190,6 +198,7 @@ export default {
       pageSize: 10,
       total: 0,
       tableData: [],
+      serverIp: "localhost",
     };
   },
   created() {
@@ -207,6 +216,14 @@ export default {
     editor.destroy(); // 组件销毁时，及时销毁 editor ，重要！！！
   },
   methods: {
+    handleExcelImportSuccess() {
+      this.$message.success("导入成功");
+      this.load();
+    },
+    exp() {
+      window.open("http://" + this.serverIp + ":9090/book/export");
+      // window.open(`http://${serverIp}:9090/book/export`);
+    },
     onCreated(editor) {
       this.editor = Object.seal(editor); // 【注意】一定要用 Object.seal() 否则会报错
     },

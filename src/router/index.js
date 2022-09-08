@@ -6,6 +6,8 @@ import Register from '../views/Register.vue'
 import Editor from '../views/Editor.vue'
 import User from '../views/User.vue'
 import Order from '../views/Order.vue'
+import WorkerInfo from '../views/WorkerInfo.vue'
+import Home from '../views/Home.vue'
 const routes = [
   {
     path: '/',
@@ -15,6 +17,11 @@ const routes = [
     children: [
       {
         path: 'home',
+        name: 'Home',
+        component: Home
+      },
+      {
+        path: 'homeView',
         name: 'HomeView',
         component: HomeView
       },
@@ -32,6 +39,11 @@ const routes = [
         path: '/order',
         name: 'Order',
         component: Order
+      },
+      {
+        path: '/workerinfo',
+        name: 'WorkerInfo',
+        component: WorkerInfo
       }
     ]
   },
