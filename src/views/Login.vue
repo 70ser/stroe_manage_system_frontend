@@ -11,21 +11,23 @@
       <div style="font-size: 30px; text-align: center; padding: 30px">欢迎登录</div>
       <el-form ref="form" :model="form" size="normal" :rules="rules">
         <el-form-item prop="username">
-          <el-input v-model="form.username" placeholder="用户名">
+          <el-input v-model="form.userName" placeholder="用户名" size="large">
             <template #prefix>
               <el-icon><User /></el-icon>
             </template>
           </el-input>
         </el-form-item>
         <el-form-item prop="password">
-          <el-input v-model="form.password" show-password placeholder="密码">
+          <el-input v-model="form.password" show-password placeholder="密码" size="large">
             <template #prefix>
               <el-icon><Lock /></el-icon>
             </template>
           </el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="login" style="width: 100%">登 录</el-button>
+          <el-button type="primary" @click="login" style="width: 100%" size="large"
+            >登 录</el-button
+          >
         </el-form-item>
       </el-form>
     </div>
@@ -39,7 +41,7 @@ export default {
     return {
       form: {},
       rules: {
-        username: [{ required: true, message: "请输入用户名", trigger: "blur" }],
+        userName: [{ required: true, message: "请输入用户名", trigger: "blur" }],
         password: [{ required: true, message: "请输入密码", trigger: "blur" }],
       },
     };
@@ -51,6 +53,7 @@ export default {
           request.post("/user/login", this.form).then((res) => {
             if (res.code === "0") {
               this.$message.success("登录成功");
+              localStorage.setItem("user", JSON.stringify(res.data));
               this.$router.push("/");
             } else {
               this.$message.error(res.msg);

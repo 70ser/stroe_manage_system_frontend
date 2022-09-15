@@ -20,7 +20,7 @@
       <div style="font-size: 30px; text-align: center; padding: 30px">注 册</div>
       <el-form ref="form" :model="form" size="normal" status-icon :rules="rules">
         <el-form-item prop="username">
-          <el-input v-model="form.username" size="large" placeholder="用户名">
+          <el-input v-model="form.userName" size="large" placeholder="用户名">
             <template #prefix>
               <el-icon><User /></el-icon> </template
             >+
@@ -102,7 +102,7 @@ export default {
       verifyCode: "",
       expiredTime: 0,
       rules: {
-        username: [
+        userName: [
           { required: true, message: "请输入用户名", trigger: "blur" },
           { validator: checkUserName, trigger: "blur" },
         ],
@@ -126,6 +126,7 @@ export default {
           var now = new Date();
           console.log(now.getTime());
           console.log(this.expiredTime);
+          console.log(this.form);
           if (now.getTime() > this.expiredTime) {
             this.$message.error("验证码已过期");
             return;

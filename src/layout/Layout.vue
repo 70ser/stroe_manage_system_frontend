@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- 头部 -->
-    <Header />
+    <Header :user="user" />
     <!-- 主体 -->
     <div style="display: flex">
       <!-- 侧边栏 -->
@@ -19,6 +19,11 @@ export default {
   components: {
     Header,
     Aside,
+  },
+  data() {
+    return {
+      user: localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")) : {},
+    };
   },
 };
 </script>
