@@ -2,9 +2,11 @@
   <div
     style="height: 50px; line-height: 50px; border-bottom: 1px solid #ccc; display: flex"
   >
-    <div style="width: 200px; padding-left: 30px; font-weight: bold">后台管理</div>
+    <div style="width: 200px; padding-left: 30px; font-weight: bold">
+      后台管理<el-icon><ArrowDown /></el-icon>
+    </div>
     <div style="flex: 1"></div>
-    <div style="width: 100px; margin-right: 40px">
+    <div style="width: 100px; margin-right: 50px">
       <el-dropdown>
         <span class="el-dropdown-link">
           <el-avatar
@@ -13,7 +15,6 @@
             style="position: relative; top: 10px"
           ></el-avatar>
           {{ user.nickName }}
-          <i class="el-icon-arrow-down el-icon--right"></i>
         </span>
         <template #dropdown>
           <el-dropdown-menu>

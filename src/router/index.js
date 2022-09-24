@@ -8,7 +8,7 @@ import User from '../views/User.vue'
 import Order from '../views/Order.vue'
 import MyInfo from '../views/MyInfo.vue'
 import Home from '../views/Home.vue'
-import FrontHeader from '../components/FrontHeader.vue'
+import FrontLayout from '../layout/FrontLayout.vue'
 const routes = [
   {
     path: '/',
@@ -66,7 +66,20 @@ const routes = [
   {
     path: '/front',
     name: 'front',
-    component: FrontHeader
+    redirect: "/front/homepage",
+    component: FrontLayout,
+    children: [
+      {
+        path: 'homepage',
+        name: 'HomePage',      
+        component:() => import('../views/front/Home.vue')
+      },
+      {
+        path: 'goods',
+        name: 'Goods',
+        component: () =>import('../views/front/Goods.vue')
+      },
+    ]
   },
 ]
 
