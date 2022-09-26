@@ -43,7 +43,12 @@
           <template #header>
             <div class="card-header">
               <span>{{ book.name }}</span>
-              <el-button text class="button" @click="buy(book.id)" type="danger"
+              <el-button
+                text
+                class="button"
+                @click="buy(book.id)"
+                type="danger"
+                :disabled="available"
                 >购买</el-button
               >
             </div>
@@ -79,7 +84,7 @@
           @click="buy(book.id)"
           type="danger"
           style="float: right; margin-left: auto"
-          :disabled="book.stock"
+          :disabled="available"
           >购买</el-button
         >
       </div>
@@ -108,8 +113,9 @@ export default {
   components: {},
   data() {
     return {
+      user: localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")) : {},
       book: {},
-      availble: true,
+      available: true,
     };
   },
   created() {
@@ -122,6 +128,8 @@ export default {
       request.get("/book/" + this.$route.query.id, {}).then((res) => {
         console.log(res);
         this.book = res.data;
+        if (this.book.stock == 0) this.available = false;
+        else this.available = true;
         document.getElementById("editor-content-view").innerHTML = res.data.description;
       });
     },
@@ -133,13 +141,23 @@ export default {
         },
       });
     },
-    buy(id) {
-      this.$router.push({
-        path: "/front/goods",
-        query: {
-          id: id,
-        },
-      });
+    buy() {
+      if (this.id == null) {
+        this.$message.error("请先登录");
+        this.$router.push("/login");
+        return;
+      }
+      request
+        .get("order/createorder", {
+          params: {
+            userId: this.user.id,
+            bookId: this.book.id,
+          },
+        })
+        .then((res) => {
+          console.log(res);
+          this.$router.push("/front/myorder");
+        });
     },
   },
 };

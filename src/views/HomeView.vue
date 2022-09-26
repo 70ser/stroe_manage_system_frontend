@@ -187,7 +187,9 @@ export default {
           },
           uploadVideo: {
             server: "http://localhost:9090/files/editor/upload",
+            maxFileSize: 100 * 1024 * 1024, // 100M
             fieldName: "file",
+            timeout: 60 * 1000, // 60 秒
           },
         },
       },
