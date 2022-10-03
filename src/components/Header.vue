@@ -18,7 +18,7 @@
         </span>
         <template #dropdown>
           <el-dropdown-menu>
-            <el-dropdown-item @click="$router.push('/myinfo')">个人信息</el-dropdown-item>
+            <el-dropdown-item @click="$router.push('/info')">个人信息</el-dropdown-item>
             <el-dropdown-item @click="logout">退出系统</el-dropdown-item>
           </el-dropdown-menu>
         </template>

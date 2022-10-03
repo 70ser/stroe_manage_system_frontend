@@ -115,7 +115,7 @@ export default {
     return {
       user: localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")) : {},
       book: {},
-      available: true,
+      available: false, //其实是notAvailable
     };
   },
   created() {
@@ -128,8 +128,8 @@ export default {
       request.get("/book/" + this.$route.query.id, {}).then((res) => {
         console.log(res);
         this.book = res.data;
-        if (this.book.stock == 0) this.available = false;
-        else this.available = true;
+        if (this.book.stock == 0) this.available = true;
+        else this.available = false;
         document.getElementById("editor-content-view").innerHTML = res.data.description;
       });
     },
@@ -142,7 +142,7 @@ export default {
       });
     },
     buy() {
-      if (this.id == null) {
+      if (this.user.id == null) {
         this.$message.error("请先登录");
         this.$router.push("/login");
         return;

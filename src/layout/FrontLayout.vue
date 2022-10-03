@@ -1,6 +1,7 @@
 <template>
   <div
     style="
+      min-height: 100vh;
       background-image: linear-gradient(to bottom right, lightblue, #fff);
       background-size: 100%;
     "

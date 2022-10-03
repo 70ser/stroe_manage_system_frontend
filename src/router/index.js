@@ -6,7 +6,7 @@ import Register from '../views/Register.vue'
 import Editor from '../views/Editor.vue'
 import User from '../views/User.vue'
 import Order from '../views/Order.vue'
-import MyInfo from '../views/MyInfo.vue'
+import Info from '../views/Info.vue'
 import Home from '../views/Home.vue'
 import FrontLayout from '../layout/FrontLayout.vue'
 const routes = [
@@ -42,9 +42,9 @@ const routes = [
         component: Order
       },
       {
-        path: '/myinfo',
-        name: 'MyInfo',
-        component: MyInfo
+        path: '/info',
+        name: 'Info',
+        component: Info
       }
     ]
   },
@@ -79,6 +79,16 @@ const routes = [
         name: 'Goods',
         component: () =>import('../views/front/Goods.vue')
       },
+      {
+        path: 'myorder',
+        name: 'MyOrder',
+        component: () =>import('../views/front/MyOrder.vue')
+      },
+      {
+        path: 'myinfo',
+        name: 'MyInfo',
+        component: () =>import('../views/front/MyInfo.vue')
+      }
     ]
   },
 ]

@@ -4,11 +4,12 @@
     class="el-menu-demo"
     mode="horizontal"
     :ellipsis="false"
+    router
   >
     <el-menu-item index="homepage">LOGO</el-menu-item>
     <!-- 不再尝试在菜单栏中嵌入搜索功能 -->
     <div style="flex: 1"></div>
-    <el-menu-item index="1">Processing Center</el-menu-item>
+    <el-menu-item index="myorder">Processing Center</el-menu-item>
     <el-dropdown style="margin-right: 50px; line-height: 58px" v-if="user.id">
       <span class="el-dropdown-link">
         <el-avatar
@@ -20,8 +21,12 @@
       </span>
       <template #dropdown>
         <el-dropdown-menu>
-          <el-dropdown-item @click="$router.push('/myinfo')">我的订单</el-dropdown-item>
-          <el-dropdown-item @click="$router.push('/myinfo')">个人信息</el-dropdown-item>
+          <el-dropdown-item @click="$router.push('/front/myorder')"
+            >我的订单</el-dropdown-item
+          >
+          <el-dropdown-item @click="$router.push('/front/myinfo')"
+            >个人信息</el-dropdown-item
+          >
           <el-dropdown-item @click="logout">退出系统</el-dropdown-item>
         </el-dropdown-menu>
       </template>
