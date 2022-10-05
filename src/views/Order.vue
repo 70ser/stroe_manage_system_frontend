@@ -15,6 +15,7 @@
         clearable
       />
       <el-button type="primary" style="margin-left: 5px" @click="load">查询</el-button>
+      <el-button type="warning" @click="reset">重置</el-button>
     </div>
     <el-table :data="tableData" stripe border style="width: 100%">
       <el-table-column prop="id" label="订单ID" sortable width="185px" />
@@ -164,6 +165,10 @@ export default {
     add() {
       this.createDialogVisible = true;
       this.form = {};
+    },
+    reset() {
+      this.search = "";
+      this.load();
     },
     save() {
       if (this.form.createTime) {

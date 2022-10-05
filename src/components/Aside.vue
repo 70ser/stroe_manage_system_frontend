@@ -21,6 +21,16 @@
         <el-menu-item index="user">用户管理</el-menu-item>
         <el-menu-item index="order">订单管理</el-menu-item>
       </el-sub-menu>
+      <el-sub-menu index="3">
+        <template #title>
+          <el-icon><Cpu /></el-icon>
+          <span>权限管理</span>
+        </template>
+        <el-menu-item index="role">角色管理</el-menu-item>
+        <el-menu-item index="menu">菜单管理</el-menu-item>
+        <!-- <el-menu-item index="user">用户管理</el-menu-item>
+        <el-menu-item index="order">订单管理</el-menu-item> -->
+      </el-sub-menu>
       <el-menu-item index="registertemp">
         <el-icon><Menu /></el-icon>
         <span>用户管理注册暂定</span>
