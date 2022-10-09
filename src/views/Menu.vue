@@ -36,7 +36,9 @@
         label-class-name="fontSize12"
       >
         <template #default="scope">
-          <span :class="scope.row.icon" />
+          <el-icon style="font-size: 20px"
+            ><component v-bind:is="scope.row.icon"></component
+          ></el-icon>
         </template>
       </el-table-column>
       <el-table-column prop="description" label="描述" min-width="50px" />
@@ -72,7 +74,21 @@
           <el-input v-model="form.pagePath" style="width: 80%" />
         </el-form-item>
         <el-form-item label="图标">
-          <el-input v-model="form.icon" style="width: 80%" />
+          <el-select
+            clearable
+            v-model="form.icon"
+            placeholder="请选择图标"
+            style="width: 80%"
+          >
+            <el-option
+              v-for="item in options"
+              :key="item.name"
+              :label="item.name"
+              :value="item.value"
+            >
+              <el-icon><component v-bind:is="item.value"></component></el-icon>
+            </el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label="描述">
           <el-input v-model="form.description" type="textarea" style="width: 80%" />
@@ -106,6 +122,7 @@ export default {
       dialogTitle: "",
       total: 0,
       tableData: [],
+      options: [],
     };
   },
   created() {
@@ -113,7 +130,6 @@ export default {
   },
   methods: {
     load() {
-      console.log("我真的load了");
       request
         .get("menu", {
           params: {
@@ -128,6 +144,9 @@ export default {
           // this.tableData = res.data.records;
           // this.total = res.data.total;
         });
+      request.get("menu/icons").then((res) => {
+        this.options = res.data;
+      });
     },
     add() {
       this.dialogTitle = "新增菜单";

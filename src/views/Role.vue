@@ -2,7 +2,9 @@
   <div class="home" style="padding: 10px">
     <!-- 功能区域-->
     <div style="margin: 10px 0">
-      <el-button type="primary" @click="add">新增</el-button>
+      <el-button type="primary" @click="add"
+        ><el-icon><component v-bind:is="testtext[1]"></component></el-icon
+      ></el-button>
       <!-- <el-button type="primary">导入</el-button>
       <el-button type="primary">导出</el-button> -->
     </div>
@@ -64,18 +66,28 @@
     </el-dialog>
     <el-dialog v-model="menuDialogVisible" title="菜单分配" width="40%">
       <el-tree
+        ref="tree"
         :data="menuData"
         show-checkbox
-        :default-expanded-keys="[1]"
-        :default-checked-keys="[5]"
+        default-expand-all
+        :default-checked-keys="checks"
         :props="props"
         node-key="id"
-        @check-change="handleCheckChange"
-      />
+      >
+        <template #default="{ data }">
+          <span class="custom-tree-node">
+            <span
+              ><el-icon style="vertical-align: -10%"
+                ><component v-bind:is="data.icon"></component></el-icon
+              >{{ data.name }}</span
+            >
+          </span>
+        </template>
+      </el-tree>
       <template #footer>
         <span class="dialog-footer">
           <el-button @click="dialogVisible = false">取消</el-button>
-          <el-button type="primary" @click="save">确定</el-button>
+          <el-button type="primary" @click="saveRoleMenu">确定</el-button>
         </span>
       </template>
     </el-dialog>
@@ -104,6 +116,11 @@ export default {
       props: {
         label: "name",
       },
+      buttontext: <Upload />,
+      testtext: ["Upload", "FullScreen"],
+      expands: [],
+      checks: [],
+      roleId: 0,
     };
   },
   created() {
@@ -124,6 +141,7 @@ export default {
           this.tableData = res.data.records;
           this.total = res.data.total;
         });
+      console.log(this.buttontext);
     },
     add() {
       this.dialogTitle = "新增角色";
@@ -135,11 +153,18 @@ export default {
       this.load();
     },
     selectMenu(row) {
-      this.menuDialogVisible = true;
+      this.roleId = row.id;
       request.get("menu").then((res) => {
         console.log(res);
         this.menuData = res.data;
+        //全部设置成展开
+        //this.expands = this.menuData.map((v) => v.id);
       });
+      request.get("role/roleMenu/" + this.roleId).then((res) => {
+        console.log(res);
+        this.checks = res.data;
+      });
+      this.menuDialogVisible = true;
     },
     save() {
       request.post("role", this.form).then((res) => {
@@ -152,6 +177,22 @@ export default {
         this.dialogVisible = false;
         this.load(); //刷新表格数据
       });
+    },
+    saveRoleMenu() {
+      // console.log(this.$refs.tree.getCheckedNodes());
+      console.log(this.$refs.tree.getCheckedKeys());
+      request
+        .post("role/roleMenu/" + this.roleId, this.$refs.tree.getCheckedKeys())
+        .then((res) => {
+          console.log(res);
+          if (res.code === "0") {
+            this.$message.success("操作成功");
+          } else {
+            this.$message.error(res.msg);
+          }
+          this.menuDialogVisible = false;
+          //this.load(); //刷新表格数据
+        });
     },
     handleCheckChange(data, checked, indeterminate) {
       console.log(data, checked, indeterminate);
