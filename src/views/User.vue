@@ -20,6 +20,13 @@
     <el-table :data="tableData" stripe border style="width: 100%">
       <el-table-column prop="id" label="用户ID" sortable width="150px" />
       <el-table-column prop="userName" label="用户名" min-width="50px" />
+      <el-table-column prop="roleId" label="角色" min-width="50px">
+        <template #default="scope">
+          <span :style="adminColor(scope.row.roleId)">{{
+            getRoleName(scope.row.roleId)
+          }}</span>
+        </template>
+      </el-table-column>
       <el-table-column prop="nickName" label="昵称" min-width="50px" />
       <el-table-column prop="email" label="邮箱" min-width="50px" />
       <el-table-column prop="phoneNumber" label="手机号" min-width="50px" />
@@ -58,6 +65,16 @@
         </el-form-item>
         <el-form-item label="用户名">
           <el-input v-model="form.userName" style="width: 80%" />
+        </el-form-item>
+        <el-form-item label="角色">
+          <el-select v-model="form.roleId" placeholder="请选择" style="width: 80%">
+            <el-option
+              v-for="role in roles"
+              :key="role.id"
+              :label="role.name"
+              :value="role.id"
+            />
+          </el-select>
         </el-form-item>
         <el-form-item label="昵称">
           <el-input v-model="form.nickName" style="width: 80%" />
@@ -115,6 +132,7 @@ export default {
       pageSize: 10,
       total: 0,
       tableData: [],
+      roles: [],
     };
   },
   created() {
@@ -128,6 +146,14 @@ export default {
   },
   methods: {
     load() {
+      request.get("role").then((res) => {
+        this.roles = res.data;
+        // console.log(this.roles);
+        // console.log(this.roles[0].name);
+        // console.log(this.roles.length);
+        // console.log("nmd, why not work");
+      });
+      //放前面使表格数据加载好之前，角色数据就已经加载好
       request
         .get("user", {
           params: {
@@ -141,6 +167,23 @@ export default {
           this.tableData = res.data.records;
           this.total = res.data.total;
         });
+    },
+    getRoleName(roleId) {
+      console.log(roleId);
+      if (roleId == null || roleId == 0) return "用户";
+      if (typeof this.roles == "undefined") {
+        return "";
+      }
+      //原来是没加this，导致roles一直是undefined
+      for (let index = 0; index < this.roles.length; index++) {
+        if (this.roles[index].id == roleId) return this.roles[index].name;
+      }
+      return "用户";
+    },
+    adminColor(roleId) {
+      if (roleId != null && roleId != 0) {
+        return { color: "red" };
+      }
     },
     add() {
       this.createDialogVisible = true;

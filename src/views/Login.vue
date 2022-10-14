@@ -54,6 +54,9 @@ export default {
             if (res.code === "0") {
               this.$message.success("登录成功");
               localStorage.setItem("user", JSON.stringify(res.data));
+              request.get("/menu/usermenus/" + res.data.id).then((res) => {
+                localStorage.setItem("menus", JSON.stringify(res.data));
+              });
               this.$router.push("/");
             } else {
               this.$message.error(res.msg);

@@ -8,41 +8,44 @@
       @open="handleOpen"
       @close="handleClose"
     >
-      <el-menu-item index="home">
-        <el-icon><House /></el-icon>
-        <span>首页</span>
-      </el-menu-item>
-      <el-sub-menu index="2">
-        <template #title>
-          <el-icon><location /></el-icon>
-          <span>系统管理</span>
-        </template>
-        <el-menu-item index="homeView">书籍管理</el-menu-item>
-        <el-menu-item index="user">用户管理</el-menu-item>
-        <el-menu-item index="order">订单管理</el-menu-item>
-      </el-sub-menu>
-      <el-sub-menu index="3">
-        <template #title>
-          <el-icon><Cpu /></el-icon>
-          <span>权限管理</span>
-        </template>
-        <el-menu-item index="role">角色管理</el-menu-item>
-        <el-menu-item index="menu">菜单管理</el-menu-item>
-        <!-- <el-menu-item index="user">用户管理</el-menu-item>
-        <el-menu-item index="order">订单管理</el-menu-item> -->
-      </el-sub-menu>
-      <el-menu-item index="registertemp">
-        <el-icon><Menu /></el-icon>
-        <span>用户管理注册暂定</span>
-      </el-menu-item>
+      <div v-for="item in menus" :key="item.id">
+        <div v-if="item.path">
+          <el-menu-item :index="item.path">
+            <el-icon><component v-bind:is="item.icon"></component></el-icon>
+            <span>{{ item.name }}</span>
+          </el-menu-item>
+        </div>
+        <div v-else>
+          <el-sub-menu :index="item.id">
+            <template #title>
+              <el-icon><component v-bind:is="item.icon"></component></el-icon>
+              <span>{{ item.name }}</span>
+            </template>
+            <div v-for="subItem in item.children" :key="subItem.id">
+              <el-menu-item :index="subItem.path">
+                <el-icon><component v-bind:is="subItem.icon"></component></el-icon>
+                <span>{{ subItem.name }}</span>
+              </el-menu-item>
+            </div>
+          </el-sub-menu>
+        </div>
+      </div>
     </el-menu>
   </div>
 </template>
 <script>
 export default {
   name: "Aside",
+  data() {
+    return {
+      menus: localStorage.getItem("menus")
+        ? JSON.parse(localStorage.getItem("menus"))
+        : [],
+    };
+  },
   created() {
     console.log(this.$route.path);
+    console.log(this.menus);
   },
 };
 </script>

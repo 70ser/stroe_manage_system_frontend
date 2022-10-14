@@ -17,6 +17,8 @@ module.exports = {
                   '^/api': ''                     //选择忽略拦截器里面的内容
               }
           }
-      }
+      },
+      historyApiFallback: true,
+      allowedHosts: "all",
   }
 }

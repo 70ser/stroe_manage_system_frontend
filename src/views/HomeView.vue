@@ -1,8 +1,10 @@
 <template>
   <div class="home" style="padding: 10px">
     <!-- 功能区域-->
-    <div style="margin: 10px 0">
-      <el-button type="primary" @click="add">新增</el-button>
+    <div style="margin: 10px 0; display: flex">
+      <el-button type="primary" @click="add"
+        ><el-icon><Plus /></el-icon>新增</el-button
+      >
       <el-upload
         :action="'http://' + serverIp + ':9090/book/import'"
         :show-file-list="false"
@@ -10,9 +12,13 @@
         :on-success="handleExcelImportSuccess"
         style="display: inline-block; margin-left: 10px; margin-right: 10px"
       >
-        <el-button type="primary">导入</el-button>
+        <el-button type="primary"
+          ><el-icon><Upload /></el-icon>导入</el-button
+        >
       </el-upload>
-      <el-button type="primary" @click="exp">导出</el-button>
+      <el-button type="primary" @click="exp"
+        ><el-icon><Download /></el-icon>导出</el-button
+      >
     </div>
     <!-- 搜索区域-->
     <div style="margin: 10px 0">
@@ -22,8 +28,12 @@
         style="width: 20%"
         clearable
       />
-      <el-button type="primary" style="margin-left: 5px" @click="load">查询</el-button>
-      <el-button type="warning" @click="reset">重置</el-button>
+      <el-button type="primary" style="margin-left: 5px" @click="load"
+        ><el-icon><Search /></el-icon>查询</el-button
+      >
+      <el-button type="warning" @click="reset"
+        ><el-icon><Close /></el-icon>重置</el-button
+      >
     </div>
     <el-table :data="tableData" stripe border style="width: 100%">
       <el-table-column type="expand">
