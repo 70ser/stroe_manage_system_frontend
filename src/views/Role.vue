@@ -2,23 +2,11 @@
   <div class="home" style="padding: 10px">
     <!-- 功能区域-->
     <div style="margin: 10px 0">
-      <el-button type="primary" @click="add"
-        ><el-icon><component v-bind:is="testtext[1]"></component></el-icon
-      ></el-button>
+      <el-button type="primary" @click="add">新增</el-button>
       <!-- <el-button type="primary">导入</el-button>
       <el-button type="primary">导出</el-button> -->
     </div>
     <!-- 搜索区域-->
-    <div style="margin: 10px 0">
-      <el-input
-        v-model="search"
-        placeholder="请输入关键字"
-        style="width: 20%"
-        clearable
-      />
-      <el-button type="primary" style="margin-left: 5px" @click="load">查询</el-button>
-      <el-button type="warning" @click="reset">重置</el-button>
-    </div>
     <el-table :data="tableData" stripe border style="width: 100%">
       <el-table-column prop="id" label="ID" sortable width="150px" />
       <el-table-column prop="name" label="名称" min-width="50px" />

@@ -6,7 +6,7 @@
           <div>
             <el-icon style="vertical-align: middle"><User /></el-icon> 用户总数
           </div>
-          <div style="padding: 10px 0; text-align: center; font-weight: bold">100</div>
+          <div style="padding: 10px 0; text-align: center; font-weight: bold">13</div>
         </el-card>
       </el-col>
       <el-col :span="6">
@@ -14,9 +14,7 @@
           <div>
             <el-icon style="vertical-align: middle"><Box /></el-icon> 订单总量
           </div>
-          <div style="padding: 10px 0; text-align: center; font-weight: bold">
-            1000000
-          </div>
+          <div style="padding: 10px 0; text-align: center; font-weight: bold">17</div>
         </el-card>
       </el-col>
       <el-col :span="6">
@@ -25,7 +23,7 @@
             <el-icon style="vertical-align: middle"><Money /></el-icon> 销售总额
           </div>
           <div style="padding: 10px 0; text-align: center; font-weight: bold">
-            ￥ 300000
+            ￥ 175.1
           </div>
         </el-card>
       </el-col>
@@ -34,7 +32,7 @@
           <div>
             <el-icon style="vertical-align: middle"><Goods /></el-icon> 书籍总数
           </div>
-          <div style="padding: 10px 0; text-align: center; font-weight: bold">20</div>
+          <div style="padding: 10px 0; text-align: center; font-weight: bold">42</div>
         </el-card>
       </el-col>
     </el-row>
@@ -88,8 +86,8 @@ export default {
 
     pieOption = {
       title: {
-        text: "Referer of a Website",
-        subtext: "Fake Data",
+        text: "销量饼状图",
+        // subtext: "Fake Data",
         left: "center",
       },
       tooltip: {

@@ -66,6 +66,17 @@
             >注 册</el-button
           >
         </el-form-item>
+        <el-form-item>
+          <!-- <span>已有账号？</span> -->
+          <el-button
+            type="primary"
+            @click="$router.push('/login')"
+            link
+            text
+            style="width: 100%"
+            >去登录</el-button
+          >
+        </el-form-item>
       </el-form>
     </div>
   </div>

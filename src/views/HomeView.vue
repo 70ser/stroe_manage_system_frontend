@@ -97,7 +97,7 @@
     </div>
     <el-dialog
       v-model="dialogVisible"
-      title="Tips"
+      title="书籍信息"
       width="50%"
       :before-close="handleDialogClose"
     >
